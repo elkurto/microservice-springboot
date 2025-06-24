@@ -12,13 +12,13 @@
     postgres:
       image: 'postgres:latest'
       environment:
-          POSTGRES_DB: ${DB_NAME_AAA}
-          POSTGRES_PASSWORD: ${DB_NAME_AAA}
-          POSTGRES_USER: ${DB_NAME_AAA}
+          POSTGRES_DB: ${DB_NAME}
+          POSTGRES_PASSWORD: ${DB_NAME}
+          POSTGRES_USER: ${DB_NAME}
     ports:
       - "5432:5432"
   ```
 1. create a containser via docker compose
   ```
-     DB_NAME_AAA=db_name_aa   docker compose -f compose.yaml --project-name aaa_db up -d
+     DB_NAME=foo   docker compose -f compose.yaml --project-name aaa_db up -d
   ```
