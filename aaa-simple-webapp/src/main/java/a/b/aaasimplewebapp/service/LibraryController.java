@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
+
 
 import java.net.URI;
 import java.util.UUID;
@@ -18,7 +18,7 @@ import java.util.UUID;
 @RestController()
 @RequestMapping(ConstRestUri.LIBRARY)
 public class LibraryController {
-  private final LibraryServiceImpl libraryService;
+  private final LibraryService libraryService;
 
   @GetMapping("")
   public ResponseEntity<ResponseIndex> index() {

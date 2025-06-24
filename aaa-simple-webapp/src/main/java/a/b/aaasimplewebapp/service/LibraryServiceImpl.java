@@ -11,17 +11,19 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class LibraryServiceImpl {
+public class LibraryServiceImpl implements LibraryService {
 
   private final BookRepository bookRepository;
 
-  public Book upsert(Book book ) {
+  @Override
+  public Book upsert(Book book) {
 
     BookEntity bookEntity =BookMapper.INSTANCE.toEntity(book);
     BookEntity bookEntitySaved =bookRepository.save(bookEntity);
     return BookMapper.INSTANCE.toDomain(bookEntitySaved);
   }
 
+  @Override
   public Book findById(UUID id) {
     BookEntity bookEntitySaved =bookRepository.findById(id).orElse(null);
     Book book =null;
@@ -31,6 +33,7 @@ public class LibraryServiceImpl {
     return book;
   }
 
+  @Override
   public void deleteById(UUID id) {
     bookRepository.deleteById(id);
   }
