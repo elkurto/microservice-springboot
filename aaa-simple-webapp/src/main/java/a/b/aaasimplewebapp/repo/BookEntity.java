@@ -2,7 +2,9 @@ package a.b.aaasimplewebapp.repo;
 
 import a.b.aaasimplewebapp.domain.Book;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Objects;
@@ -10,6 +12,8 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name="book")
 public class BookEntity {
