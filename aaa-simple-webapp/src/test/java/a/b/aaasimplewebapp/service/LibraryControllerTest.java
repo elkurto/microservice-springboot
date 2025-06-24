@@ -41,7 +41,7 @@ public class LibraryControllerTest {
   }
 
   @Test
-  void testGetOneByUuid() throws Exception {
+  void testGetBookById() throws Exception {
     // given
     UUID uuid = UUID.randomUUID();
     Book book = new Book(uuid, "foo","bar", 123456);
@@ -61,11 +61,39 @@ public class LibraryControllerTest {
   }
 
   @Test
-  void testShouldReturn404WhenNotFound() throws Exception {
+  void testGetBookByIdShouldReturn404WhenNotFound() throws Exception {
     UUID uuid = UUID.randomUUID();
     when(libraryService.findById(uuid)).thenReturn(null);
 
     mockMvc.perform(MockMvcRequestBuilders.get(ConstRestUri.LIBRARY_BOOK +"/"+ uuid.toString()))
             .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void testDelete() throws Exception {
+    UUID uuid = UUID.randomUUID();
+    Book book = new Book(uuid, "foo","bar", 123456);
+    when(libraryService.findById(uuid)).thenReturn(book);
+
+    mockMvc.perform(MockMvcRequestBuilders.delete(ConstRestUri.LIBRARY_BOOK + "/" + uuid.toString()))
+            .andExpect(status().isOk())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(uuid.toString()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("foo"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.author").value("bar"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.publishedDateMillis").value(123456));
+  }
+
+  @Test
+  void testDeleteShouldReturn404WhenNotFound() throws Exception {
+    UUID uuid = UUID.randomUUID();
+    when(libraryService.findById(uuid)).thenReturn(null);
+
+    mockMvc.perform(MockMvcRequestBuilders.delete(ConstRestUri.LIBRARY_BOOK + "/" + uuid.toString()))
+            .andExpect(status().isNotFound())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(uuid.toString()))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.name").doesNotExist())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.author").doesNotExist())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.publishedDateMillis").value(0));
+
   }
 }

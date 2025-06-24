@@ -44,7 +44,7 @@ public class LibraryController {
   }
 
   @GetMapping(ConstRestUri.BOOK+"/{uuidBook}")
-  public ResponseEntity<Book> getBook(@PathVariable UUID uuidBook) {
+  public ResponseEntity<Book> getBookById(@PathVariable UUID uuidBook) {
     Book book =this.libraryService.findById(uuidBook);
     if ( book == null ) {
       return ResponseEntity.notFound().build();
@@ -54,7 +54,7 @@ public class LibraryController {
   }
 
   @DeleteMapping(ConstRestUri.BOOK+"/{uuidBook}")
-  public ResponseEntity<Book> deleteBook(@PathVariable UUID uuidBook) {
+  public ResponseEntity<Book> deleteBookById(@PathVariable UUID uuidBook) {
     Book book =this.libraryService.findById(uuidBook);
     if ( book != null ) {
       this.libraryService.deleteById(uuidBook);
