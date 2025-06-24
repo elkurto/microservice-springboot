@@ -1,0 +1,19 @@
+meta {
+  name: book-upsert
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8080/library/book
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {"id":null,
+  "name":"Hyperion",
+  "author":"Larry Niven",
+  "publishedDateMillis": 34534590
+  }
+}

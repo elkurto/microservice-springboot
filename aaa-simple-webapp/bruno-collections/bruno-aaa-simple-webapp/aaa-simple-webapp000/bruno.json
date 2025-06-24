@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "aaa-simple-webapp000",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
