@@ -35,7 +35,7 @@ public class LibraryController {
             .buildAndExpand(bookUpserted.getId())
             .toUri();
     HttpHeaders responseHeaders = new HttpHeaders();
-    responseHeaders.set("Location", location.toString());
+    responseHeaders.setLocation(location);
 
     return ResponseEntity.ok()
             .headers(responseHeaders)
