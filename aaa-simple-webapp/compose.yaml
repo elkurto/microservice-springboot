@@ -3,9 +3,13 @@ services:
   # DB_NAME_AAA=aaa_db docker compose -f compose.yaml --project-name aaa_db up -d
   aaa_db:
     image: 'postgres:latest'
+    restart: always
     environment:
-      POSTGRES_DB: ${DB_NAME_AAA}
-      POSTGRES_PASSWORD: ${DB_NAME_AAA}
-      POSTGRES_USER: ${DB_NAME_AAA}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_PASSWORD: ${DB_NAME}
+      POSTGRES_USER: ${DB_NAME}
+      DB_NAME : ${DB_NAME}
     ports:
       - "5432:5432"
+    volumes:
+      - ./init-db:/docker-entrypoint-initdb.d

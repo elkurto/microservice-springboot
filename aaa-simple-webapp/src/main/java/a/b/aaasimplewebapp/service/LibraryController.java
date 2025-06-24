@@ -4,11 +4,14 @@ import a.b.aaasimplewebapp.domain.Book;
 import a.b.aaasimplewebapp.domain.ConstRestUri;
 import a.b.aaasimplewebapp.domain.ResponseIndex;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -24,17 +27,24 @@ public class LibraryController {
   }
 
   @PostMapping(ConstRestUri.BOOK)
-  public ResponseEntity<Book> postBook(@RequestBody Book book, UriComponentsBuilder uriComponentsBuilder) {
+  public ResponseEntity<Book> postBook(@RequestBody Book book) {
     Book bookUpserted =this.libraryService.upsert(book);
-    var newBookUri =uriComponentsBuilder.path(ConstRestUri.LIBRARY_BOOK+"/{uuid}").build(bookUpserted.getId());
 
-    ResponseEntity<Book> responseEntityBook =new ResponseEntity<>(book, HttpStatus.OK);
-    responseEntityBook.getHeaders().setLocation(newBookUri);
-    return responseEntityBook;
+    URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{uuid}")
+            .buildAndExpand(bookUpserted.getId())
+            .toUri();
+    HttpHeaders responseHeaders = new HttpHeaders();
+    responseHeaders.set("Location", location.toString());
+
+    return ResponseEntity.ok()
+            .headers(responseHeaders)
+            .body(bookUpserted);
+
   }
 
-  @GetMapping
-  public ResponseEntity<Book> getBook(@RequestParam UUID uuidBook) {
+  @GetMapping(ConstRestUri.BOOK+"/{uuidBook}")
+  public ResponseEntity<Book> getBook(@PathVariable UUID uuidBook) {
     Book book =this.libraryService.findById(uuidBook);
     if ( book == null ) {
       return ResponseEntity.notFound().build();
@@ -43,8 +53,8 @@ public class LibraryController {
     return ResponseEntity.ok(book);
   }
 
-  @DeleteMapping
-  public ResponseEntity<Book> deleteBook(@RequestParam UUID uuidBook) {
+  @DeleteMapping(ConstRestUri.BOOK+"/{uuidBook}")
+  public ResponseEntity<Book> deleteBook(@PathVariable UUID uuidBook) {
     Book book =this.libraryService.findById(uuidBook);
     if ( book != null ) {
       this.libraryService.deleteById(uuidBook);

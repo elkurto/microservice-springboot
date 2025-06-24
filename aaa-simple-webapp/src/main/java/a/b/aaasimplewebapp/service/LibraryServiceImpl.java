@@ -13,7 +13,7 @@ import java.util.UUID;
 @Service
 public class LibraryServiceImpl {
 
-  private BookRepository bookRepository;
+  private final BookRepository bookRepository;
 
   public Book upsert(Book book ) {
 
